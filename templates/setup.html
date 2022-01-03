@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load removeMa %}
+
+{% block setup %}
+
+    <div id="liveAlertPlaceholder"></div>
+<h1>Plannificateur de Route</h1>
+<form method="post" enctype="multipart/form-data">
+    {%  csrf_token %}
+    <label for="document">Charger un fichier csv :</label>
+    <input type="file" name="document"  accept=".csv">
+    <br>
+    <div>
+    <label for="method">Selectionner un mode de recherche :</label>
+
+    <select name="methodd" id="methodd">
+        <option value="Mode rapide">Mode rapide</option>
+        <option value="Mode avancé">Mode avancé</option>
+        <option value="Reinforcement Learning">Reinforcement Learning</option>
+    </select>
+        <!--<div class="hint-panel">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit eum totam fugit quaerat asperiores, quae magni voluptate dolore deserunt esse explicabo aspernatur optio. Cumque doloremque iure sequi, fugit, quasi quas harum ut, ullam quis doloribus odio ipsam! Nemo, enim ea quaerat earum consequuntur temporibus est? Id odio deserunt repellat nulla!
+        </div> -->
+    </div>
+    <br>
+    <button id="submit" type="submit" class="btn btn-primary" disabled>Trouver la Route Optimale <span class="badge bg-success">Beta</span></button>
+        <a type="" class="float-right"  style="float: right" data-bs-toggle="modal" data-bs-target="#exampleModal">Besoin d'aide ?</a>
+
+</form>
+
+    <hr>
+    <div id="route" class="">
+        <b>La route recommandée passe par les adresses dans l'ordre suivant ({{ method }}):</b>
+        <ol>
+        {% for city in cities %}
+            <li>{{ city }}</li>
+        {% endfor %}
+        </ol>
+        <button id="show" class="btn btn-primary">Afficher la Route</button>
+        <hr>
+        <div id='total-distance'></div>
+        <div id="total-duration"></div>
+        <hr>
+        <div id="directions-panel"></div>
+    </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Aide</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+          <!-- 1 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                Préparer le fichier de destinations
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+              <div class="accordion-body">
+                <p dir="ltr">
+                  Le fichier contenant les villes/adresses de départ et d’arrêt doit être au
+                  format csv(comma seperated variables) et respecter la forme suivante :
+              </p>
+              <ul>
+                  <li dir="ltr">
+                      <p dir="ltr">
+                          Nombre de colones : 1
+                      </p>
+                  </li>
+                  <li dir="ltr">
+                      <p dir="ltr">
+                          Nom de la colonne: Villes
+                      </p>
+                  </li>
+                  <li dir="ltr">
+                      <p dir="ltr">
+                          Une ville par ligne
+                      </p>
+                  </li>
+              </ul>
+              <p dir="ltr">
+                  Exemple :
+              </p>
+              <p class="ville column">
+                  Villes
+              </p>
+              <p class="ville">
+                  Ville1
+              </p>
+              <p class="ville">
+                  Ville2
+              </p>
+              <p class="ville">
+                  Ville3
+              </p>
+              <p class="ville">
+                  …
+              </p>
+              <p class="ville">
+                  VilleN
+              </p>
+              <p dir="ltr">
+                  Bien que l’application peut corriger les erreurs de saisie des villes
+                  Une écriture correcte et précise reste la seule garantie du bon
+                  fonctionnement de l’application. Il n’est pas nécessaire d’ajouter ‘Maroc’
+                  en fin de chaque adresse.
+              </p>
+              <a href="https://fr.wikihow.com/cr%C3%A9er-un-fichier-CSV" class="help-link">Plus de détails sur la création de fichiers csv</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                Importer le fichier sur l’application
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+              <div class="accordion-body">
+                <p dir="ltr">
+                  Cliquez sur le bouton “Choisir un fichier” et sélectionnez le fichier
+                  préparé dans l’étape précédente.
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                Choisir le mode de recherche
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+              <div class="accordion-body">
+                <p dir="ltr">
+                  Actuellement, 3 modes de construction de route sont disponibles:
+              </p>
+              <ul>
+                  <li dir="ltr">
+                      <p dir="ltr">
+                          Mode rapide: Le mode par défaut. Il permet de construire une bonne
+                          tournée mais qui n’est pas nécessairement la meilleure possible.
+                          Comme son nom l’indique, l’avantage de ce mode est le traitement
+                          rapide. Choisissez-le si vous désirez commencer la tournée le plus
+                          tôt possible.
+                      </p>
+                  </li>
+                  <li dir="ltr">
+                      <p dir="ltr">
+                          Mode exact: Ce mode, plus avancé, garantit la meilleure tournée
+                          possible mais risque de prendre plus longtemps. Le temps de
+                          traitement augmente exponentiellement avec le nombre d’arrêts.
+                          Choisissez ce mode si le départ n’est pas urgent.
+                      </p>
+                  </li>
+                  <li dir="ltr">
+                      <p dir="ltr">
+                          Reinforcement Learning: Ce mode exploite les dernières avancées
+                          dans le domaine de l’intelligence artificielle pour donner une
+                          solution très proche voir égale à la solution exacte dans un temps
+                          comparable au mode rapide.
+                      </p>
+                  </li>
+              </ul>
+              <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce" class="help-link">
+                  Plus de détails sur les technique de résolutions ici
+              </a></div>
+            </div>
+          </div>
+
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+                Commencer la construction de route
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
+              <div class="accordion-body">
+                <p dir="ltr">
+                  Cliquez sur “Trouver la Route Optimale” pour démarrer la construction de la
+                  route. Le traitement s’effectue sur nos serveurs. Une fois une tournée
+                  préparée, l’ordre de passage des adresses d’arrêts est affiché
+              </p></div>
+            </div>
+          </div>
+
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="false" aria-controls="panelsStayOpen-collapseFive">
+                Afficher les détails de la route
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFive">
+              <div class="accordion-body">
+                <p dir="ltr">
+                  Pour visualiser la tournée sur la carte, cliquez sur le bouton “Afficher la
+                  route”. Ceci affichera aussi les segments de la route ainsi que les
+                  distances et durées estimés du trajet.
+              </p></div>
+            </div>
+          </div>
+
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingSix">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
+                Modifier la route (optionnel)
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSix">
+              <div class="accordion-body">
+                <p dir="ltr">
+                  Glissez le chemin sur la carte si vous désirez modifier la carte
+                  manuellement. Vous verrez les distances et durées estimés du trajet changer
+                  en tant réel.
+              </p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

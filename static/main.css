@@ -1,0 +1,56 @@
+/* Set the size of the div element that contains the map */
+#map {
+    height:100%;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+  }
+
+/*.btn {*/
+/*    background-color: #FFA500;*/
+/*    border-color: #EA4335;*/
+/*    border-width: 1px;*/
+/*    font-weight: bolder;*/
+/*}*/
+
+/*.btn:hover {*/
+/*    background-color: transparent;*/
+/*    color: #EA4335;*/
+/*    border-color: #EA4335;*/
+/*    border-width: 1px;*/
+/*    font-weight: bolder;*/
+/*}*/
+
+.main {
+    display: flex;
+    height: 100vh;
+}
+
+.setup {
+    flex-shrink: 2;
+}
+
+.container {
+    width: 100%;
+}
+
+#directions-panel {
+  margin-top: 10px;
+}
+
+
+
+.ville {
+    line-height: 2px;
+    color: darkgreen;
+}
+
+.help-link {
+    color: dimgrey;
+    font-style: italic;
+    text-decoration: none;
+}
+
+#route {
+    display: block;
+}
