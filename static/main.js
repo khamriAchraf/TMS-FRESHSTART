@@ -25,10 +25,10 @@ function computeTotal(result){
     totalDuration=convertTime(totalDuration)
 
     distanceHTML=document.getElementById('total-distance')
-    distanceHTML.innerHTML="<b>Distance totale : </b>"+totalDistance
+    distanceHTML.innerHTML="<hr><b>Distance totale : </b>"+totalDistance
 
     durationHTML=document.getElementById('total-duration')
-    durationHTML.innerHTML="<b>Durée totale estimée: </b>"+totalDuration
+    durationHTML.innerHTML="<b>Durée totale estimée: </b>"+totalDuration +"<hr>"
 
 }
 

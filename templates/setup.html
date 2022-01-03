@@ -9,19 +9,17 @@
     {%  csrf_token %}
     <label for="document">Charger un fichier csv :</label>
     <input type="file" name="document"  accept=".csv">
-    <br>
-    <div>
-    <label for="method">Selectionner un mode de recherche :</label>
+    <label for="method">Choisir un mode de recherche :</label>
 
     <select name="methodd" id="methodd">
         <option value="Mode rapide">Mode rapide</option>
         <option value="Mode avancé">Mode avancé</option>
         <option value="Reinforcement Learning">Reinforcement Learning</option>
     </select>
-        <!--<div class="hint-panel">
+    <!--<div class="hint-panel">
                     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit eum totam fugit quaerat asperiores, quae magni voluptate dolore deserunt esse explicabo aspernatur optio. Cumque doloremque iure sequi, fugit, quasi quas harum ut, ullam quis doloribus odio ipsam! Nemo, enim ea quaerat earum consequuntur temporibus est? Id odio deserunt repellat nulla!
         </div> -->
-    </div>
+    <br>
     <br>
     <button id="submit" type="submit" class="btn btn-primary" disabled>Trouver la Route Optimale <span class="badge bg-success">Beta</span></button>
         <a type="" class="float-right"  style="float: right" data-bs-toggle="modal" data-bs-target="#exampleModal">Besoin d'aide ?</a>
@@ -29,20 +27,25 @@
 </form>
 
     <hr>
-    <div id="route" class="">
-        <b>La route recommandée passe par les adresses dans l'ordre suivant ({{ method }}):</b>
-        <ol>
-        {% for city in cities %}
-            <li>{{ city }}</li>
-        {% endfor %}
-        </ol>
-        <button id="show" class="btn btn-primary">Afficher la Route</button>
-        <hr>
-        <div id='total-distance'></div>
-        <div id="total-duration"></div>
-        <hr>
-        <div id="directions-panel"></div>
+    <div id='route'>
+        {% if method != '' %}
+            <b>La route recommandée passe par les adresses dans l'ordre suivant ({{ method }}):</b>
+            <ol>
+            {% for city in cities %}
+                <li>{{ city }}</li>
+            {% endfor %}
+            </ol>
+            <button id='show' class='btn btn-primary'>Afficher la Route</button>
+
+            <div id='total-distance'></div>
+            <div id='total-duration'></div>
+
+            <div id='directions-panel'></div>
+        {% endif %}
     </div>
+
+
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -173,7 +176,7 @@
                   </li>
               </ul>
               <a href="https://fr.wikipedia.org/wiki/Probl%C3%A8me_du_voyageur_de_commerce" class="help-link">
-                  Plus de détails sur les technique de résolutions ici
+                  Plus de détails sur les techniques de résolution ici
               </a></div>
             </div>
           </div>
