@@ -1,17 +1,15 @@
 import json
-
 import numpy as np
 import requests
 from django.shortcuts import render
 from django.utils.encoding import smart_str
-from django.utils.encoding import smart_str
-
 from TMSFreshStart import settings
-from branch_and_bound import BranchAndBound
+from branchAndBound import BranchandBound
 from knn import nearestNeighbor
 from .forms import UploadFileForm
 import pandas as pd
 from django.http import HttpResponse
+from rl import Agent
 
 # Create your views here.
 def setup_view(request,*args,**kwargs):
@@ -88,6 +86,7 @@ def createDistanceMatrix(cities,data):
         l.append(ll)
         ll = []
     matrix = np.array(l)
+    print(matrix)
     return matrix
 
 
@@ -98,16 +97,27 @@ def knn(cities,matrix):
         ordered_cities.append((smart_str(cities[i - 1])))
     return ordered_cities
 def branchBound(cities,matrix):
-    agent = BranchAndBound(matrix)
-    agent.TSP()
     ordered_cities=[]
-    bb_output = agent.final_path
+    bb_output = BranchandBound(matrix)
     for i in bb_output:
         ordered_cities.append((smart_str(cities[i])))
     return ordered_cities
+def rl(cities,matrix):
+    ordered_cities = []
+    agent = Agent(matrix)
+    agent.learn()
+    agent.act()
+    rl_output = BranchandBound(matrix)
+    for i in rl_output:
+        ordered_cities.append((smart_str(cities[i])))
+    return ordered_cities
+
+
 
 def constructRoute(cities,matrix,method):
     if method=='Mode rapide':
         return knn(cities,matrix)
     elif method=='Mode avancé':
         return branchBound(cities,matrix)
+    elif method=='Reinforcement Learning':
+        return rl(cities,matrix)

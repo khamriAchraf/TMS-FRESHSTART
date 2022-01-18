@@ -4,7 +4,7 @@
 {% block setup %}
 
     <div id="liveAlertPlaceholder"></div>
-<h1>Plannificateur de Route</h1>
+<h1 id="title" class="mb-3">Plannificateur de Tournée</h1>
 <form method="post" enctype="multipart/form-data">
     {%  csrf_token %}
     <label for="document">Charger un fichier csv :</label>
@@ -22,20 +22,21 @@
     <br>
     <br>
     <button id="submit" type="submit" class="btn btn-primary" disabled>Trouver la Route Optimale <span class="badge bg-success">Beta</span></button>
-        <a type="" class="float-right"  style="float: right" data-bs-toggle="modal" data-bs-target="#exampleModal">Besoin d'aide ?</a>
+        <a type="" class="float-right"  style="float: right; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal">Besoin d'aide ?</a>
 
 </form>
 
     <hr>
     <div id='route'>
         {% if method != '' %}
-            <b>La route recommandée passe par les adresses dans l'ordre suivant ({{ method }}):</b>
-            <ol>
+            <b id="text">La route recommandée passe par les adresses dans l'ordre suivant ({{ method }}):</b>
+            <ol id="list">
             {% for city in cities %}
                 <li>{{ city }}</li>
             {% endfor %}
             </ol>
             <button id='show' class='btn btn-primary'>Afficher la Route</button>
+            <button id="pdf" type="pdf" class="btn btn-primary">Télécharger le Rapport de Tournée</button>
 
             <div id='total-distance'></div>
             <div id='total-duration'></div>
@@ -228,9 +229,27 @@
                   Glissez le chemin sur la carte si vous désirez modifier la carte
                   manuellement. Vous verrez les distances et durées estimés du trajet changer
                   en tant réel.
-              </p></div>
+                </p>
+              </div>
             </div>
           </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingSeven">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSeven" aria-expanded="false" aria-controls="panelsStayOpen-collapseSeven">
+                générer un rapport
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
+              <div class="accordion-body">
+                <p dir="ltr">
+                  Pour créer et enregistrer un rapport de la tournée cliquez sur le bouton "Télécharger le Rapport de Tournée”. Le rapport contient uniquement les informations affichées sur l’écran. Pour y inclure les détails de la tournée, cliquez sur “Afficher la Route” avant de générer votre rapport.
+
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

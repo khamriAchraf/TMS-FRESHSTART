@@ -46,10 +46,13 @@
 }
 
 .help-link {
+    cursor: pointer;
     color: dimgrey;
     font-style: italic;
     text-decoration: none;
 }
+
+
 
 #route {
     display: block;

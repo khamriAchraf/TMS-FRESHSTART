@@ -132,4 +132,5 @@ MEDIA_ROOT = 'media'
 
 MEDIA_URL = '/media/'
 
-API_KEY = "AIzaSyDved8UlGNtRmT4yq_qkVE99RuOC702LiM"
+#API_KEY = "AIzaSyCwASsBTThBmyFbIqvvgtDok0WWlvZOBzE"
+API_KEY=""

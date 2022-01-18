@@ -28,7 +28,7 @@ function computeTotal(result){
     distanceHTML.innerHTML="<hr><b>Distance totale : </b>"+totalDistance
 
     durationHTML=document.getElementById('total-duration')
-    durationHTML.innerHTML="<b>Durée totale estimée: </b>"+totalDuration +"<hr>"
+    durationHTML.innerHTML="<b>Durée totale estimée : </b>"+totalDuration +"<hr>"
 
 }
 
@@ -89,10 +89,6 @@ function initMap() {
         waypoints: waypts,
         optimizeWaypoints: false,
         travelMode: google.maps.TravelMode.DRIVING,
-        drivingOptions: {
-            departureTime: new Date(Date.now()),
-            trafficModel: 'optimistic'
-        }
       })
       .then((response) => {
         directionsRenderer.setDirections(response);
@@ -123,3 +119,4 @@ function initMap() {
       })
       .catch((e) => window.alert("Directions request failed due to " + e,'danger'));
   }
+
