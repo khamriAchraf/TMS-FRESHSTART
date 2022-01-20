@@ -14,7 +14,7 @@ from rl import Agent
 # Create your views here.
 def setup_view(request,*args,**kwargs):
     try:
-        locations,method=getDataFromForm(request)
+        locations,method=getDataFromForm(request) # Traitement de données
         distance_data=getDistances(locations)
         distance_matrix=createDistanceMatrix(locations,distance_data)
         ordered_locations=constructRoute(locations,distance_matrix,method)
@@ -71,6 +71,7 @@ def getDistances(cities):
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     data = json.loads(response.text)
+    print(url)
     return data
 
 
@@ -104,6 +105,8 @@ def branchBound(cities,matrix):
     return ordered_cities
 def rl(cities,matrix):
     ordered_cities = []
+    for i in range(len(matrix)):
+        matrix[i][i]=0
     agent = Agent(matrix)
     agent.learn()
     agent.act()
