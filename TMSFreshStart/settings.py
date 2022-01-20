@@ -133,4 +133,4 @@ MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
 API_KEY=""
-#API_KEY = "AIzaSyCwASsBTThBmyFbIqvvgtDok0WWlvZOBzE"
+API_KEY = "AIzaSyCwASsBTThBmyFbIqvvgtDok0WWlvZOBzE"
